@@ -1,7 +1,5 @@
-# Thème forcé CLAIR — identique en mode clair ET sombre.
-# Ainsi, même si le navigateur/OS est en mode sombre, les widgets
-# (dont les dropdowns) restent blancs.
-
+New-Item -ItemType Directory -Force -Path .streamlit | Out-Null
+@"
 [client]
 toolbarMode = "minimal"
 
@@ -12,14 +10,12 @@ backgroundColor = "#F4F6F8"
 secondaryBackgroundColor = "#FFFFFF"
 textColor = "#1A1A1A"
 
-# On duplique le même thème pour le mode sombre → plus de fond noir
 [theme.dark]
 primaryColor = "#3E6668"
 backgroundColor = "#F4F6F8"
 secondaryBackgroundColor = "#FFFFFF"
 textColor = "#1A1A1A"
 
-# Sidebar explicitement en blanc
 [theme.sidebar]
 backgroundColor = "#FFFFFF"
 secondaryBackgroundColor = "#FFFFFF"
@@ -29,3 +25,4 @@ textColor = "#1A1A1A"
 backgroundColor = "#FFFFFF"
 secondaryBackgroundColor = "#FFFFFF"
 textColor = "#1A1A1A"
+"@ | Set-Content -Path .streamlit/config.toml -Encoding UTF8
