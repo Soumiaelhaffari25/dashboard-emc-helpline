@@ -1,0 +1,31 @@
+# Thème forcé CLAIR — identique en mode clair ET sombre.
+# Ainsi, même si le navigateur/OS est en mode sombre, les widgets
+# (dont les dropdowns) restent blancs.
+
+[client]
+toolbarMode = "minimal"
+
+[theme]
+base = "light"
+primaryColor = "#3E6668"
+backgroundColor = "#F4F6F8"
+secondaryBackgroundColor = "#FFFFFF"
+textColor = "#1A1A1A"
+
+# On duplique le même thème pour le mode sombre → plus de fond noir
+[theme.dark]
+primaryColor = "#3E6668"
+backgroundColor = "#F4F6F8"
+secondaryBackgroundColor = "#FFFFFF"
+textColor = "#1A1A1A"
+
+# Sidebar explicitement en blanc
+[theme.sidebar]
+backgroundColor = "#FFFFFF"
+secondaryBackgroundColor = "#FFFFFF"
+textColor = "#1A1A1A"
+
+[theme.dark.sidebar]
+backgroundColor = "#FFFFFF"
+secondaryBackgroundColor = "#FFFFFF"
+textColor = "#1A1A1A"

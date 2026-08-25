@@ -1,0 +1,14 @@
+# Python
+__pycache__/
+*.pyc
+.venv/
+venv/
+env/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IMPORTANT : NE PAS ignorer les dossiers nécessaires au dashboard
+# (on garde data/, output/, assets/, .streamlit/)
+# Ne rien ajouter ici qui exclue ces dossiers.
