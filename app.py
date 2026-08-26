@@ -181,7 +181,6 @@ st.markdown(
             margin: 12px 0 8px 0;
         }}
         .footer {{ text-align: center; color: #555 !important; font-size: 12.5px; padding: 18px 0 4px 0; }}
-        #MainMenu, footer {{ visibility: hidden; }}
 
         /* ============ RESPONSIVE MOBILE (écrans étroits) ============ */
         @media (max-width: 768px) {{
@@ -191,17 +190,10 @@ st.markdown(
             .kpi-value {{ font-size: 26px !important; }}
             .kpi-label {{ font-size: 11px !important; }}
             .section-title {{ font-size: 17px !important; }}
-            /* Les colonnes Streamlit s'empilent verticalement sur mobile */
             [data-testid="stHorizontalBlock"] {{ flex-direction: column !important; }}
             [data-testid="column"] {{ width: 100% !important; flex: 1 1 100% !important; }}
             .block-container {{ padding-left: 0.8rem !important; padding-right: 0.8rem !important; }}
         }}
-
-        /* Masquer seulement la barre d'outils "Deploy" et le liseré coloré.
-           On NE touche PAS au header ni au bouton d'ouverture de la sidebar,
-           pour que les filtres restent accessibles sur mobile. */
-        [data-testid="stToolbar"] {{ display: none !important; }}
-        [data-testid="stDecoration"] {{ display: none !important; }}
     </style>
     """,
     unsafe_allow_html=True,
