@@ -1,3 +1,25 @@
+"""
+================================================================================
+ TABLEAU DE BORD DÉCISIONNEL ET ANALYTIQUE — EMC HELPLINE
+ CMRPI — Centre Marocain de Recherche Polytechnique et d'Innovation
+ Jalon 3 — Dashboard Streamlit
+================================================================================
+
+Lancement :
+    streamlit run app.py
+
+Ce dashboard AFFICHE les figures produites par src/kpi.py (dossier
+output/figures/). Exécutez donc d'abord :
+    python src/cleaning.py
+    python src/kpi.py
+
+Arborescence attendue :
+    ├── app.py
+    ├── assets/cmrpi.png
+    ├── data/processed/signalements_clean.csv
+    └── output/figures/kpi*.png
+"""
+
 import base64
 import os
 
@@ -49,14 +71,20 @@ st.markdown(
             color: {TEXTE} !important;
         }}
 
-        /* Sidebar blanche + toujours visible */
+        /* Sidebar blanche */
         [data-testid="stSidebar"] {{
             background-color: #FFFFFF;
-            display: flex !important;
-            visibility: visible !important;
-            transform: none !important;
-            min-width: 300px !important;
-            width: 300px !important;
+        }}
+        /* Sur DESKTOP uniquement : sidebar toujours visible et large.
+           Sur mobile, on laisse Streamlit gérer le repli normal. */
+        @media (min-width: 769px) {{
+            [data-testid="stSidebar"] {{
+                display: flex !important;
+                visibility: visible !important;
+                transform: none !important;
+                min-width: 300px !important;
+                width: 300px !important;
+            }}
         }}
         /* Bouton d'ouverture/fermeture de la sidebar : bien visible (vert CMRPI) */
         [data-testid="stSidebarCollapsedControl"] {{
@@ -150,6 +178,21 @@ st.markdown(
         }}
         .footer {{ text-align: center; color: #555 !important; font-size: 12.5px; padding: 18px 0 4px 0; }}
         #MainMenu, footer {{ visibility: hidden; }}
+
+        /* ============ RESPONSIVE MOBILE (écrans étroits) ============ */
+        @media (max-width: 768px) {{
+            .header-band {{ padding: 14px 16px !important; }}
+            .header-title {{ font-size: 20px !important; line-height: 1.2 !important; }}
+            .header-sub {{ font-size: 12px !important; }}
+            .kpi-value {{ font-size: 26px !important; }}
+            .kpi-label {{ font-size: 11px !important; }}
+            .section-title {{ font-size: 17px !important; }}
+            /* Les colonnes Streamlit s'empilent verticalement sur mobile */
+            [data-testid="stHorizontalBlock"] {{ flex-direction: column !important; }}
+            [data-testid="column"] {{ width: 100% !important; flex: 1 1 100% !important; }}
+            /* Réduire les marges latérales pour gagner de la place */
+            .block-container {{ padding-left: 0.8rem !important; padding-right: 0.8rem !important; }}
+        }}
 
         /* Rendre le bandeau d'en-tête Streamlit transparent (retire le fond noir)
            tout en gardant les boutons de contrôle de la sidebar accessibles */
@@ -278,21 +321,19 @@ def carte(col, valeur, label):
 
 if dff is not None:
     total = len(dff)
-    g_valide = dff["genre"].notna().sum()
-    pct_f = (dff["genre"] == "Féminin").sum() / g_valide * 100 if g_valide else 0
-    t_anon = (dff["anonymat"] == "Oui").mean() * 100 if total else 0
-    t_acc = (dff["accompagnement"] == "Oui").mean() * 100 if total else 0
-    nb_plt = dff["plateforme"].nunique()
 
-    c1, c2, c3, c4, c5 = st.columns(5)
-    carte(c1, f"{total}", "Signalements")
-    carte(c2, f"{pct_f:.0f}%", "Victimes féminines")
-    carte(c3, f"{t_anon:.0f}%", "Taux d'anonymat")
-    carte(c4, f"{t_acc:.0f}%", "Demandes d'accompagnement")
-    carte(c5, f"{nb_plt}", "Plateformes concernées")
+    # Un seul indicateur, centré
+    _g, c1, _d = st.columns([2, 2, 2])
+    c1.markdown(
+        f"<div class='kpi-card' style='text-align:center;border-left:none;"
+        f"border-top:6px solid #3E6668;'>"
+        f"<p class='kpi-value'>{total}</p>"
+        f"<p class='kpi-label'>Signalements</p></div>",
+        unsafe_allow_html=True,
+    )
 else:
     st.info(
-        "CSV nettoyé introuvable — les cartes d'indicateurs sont masquées. "
+        "CSV nettoyé introuvable — l'indicateur est masqué. "
         "Exécutez `python src/cleaning.py`. Les graphiques restent affichés."
     )
 
@@ -361,6 +402,6 @@ with onglet3:
 
 st.markdown(
     "<div class='footer'>© 2025 CMRPI — EMC Helpline · "
-    "Tableau de bord décisionnel et analytique des signalements </div>",
+    "Tableau de bord décisionnel et analytique des signalements · Jalon 3</div>",
     unsafe_allow_html=True,
 )
