@@ -35,7 +35,7 @@ st.set_page_config(
     page_title="EMC Helpline — Tableau de bord CMRPI",
     page_icon="assets/cmrpi.png" if os.path.exists("assets/cmrpi.png") else "📊",
     layout="wide",
-    initial_sidebar_state="expanded",
+    initial_sidebar_state="auto",
 )
 
 # Palette EMC Helpline (reprise de src/kpi.py)
@@ -91,32 +91,9 @@ st.markdown(
             color: {TEXTE} !important;
         }}
 
-        /* Sidebar blanche */
+        /* Sidebar blanche (Streamlit gère l'affichage/repli, y compris sur mobile) */
         [data-testid="stSidebar"] {{
             background-color: #FFFFFF;
-        }}
-        /* Sur DESKTOP uniquement : sidebar toujours visible et large.
-           Sur mobile, on laisse Streamlit gérer le repli normal. */
-        @media (min-width: 769px) {{
-            [data-testid="stSidebar"] {{
-                display: flex !important;
-                visibility: visible !important;
-                transform: none !important;
-                min-width: 300px !important;
-                width: 300px !important;
-            }}
-        }}
-        /* Bouton d'ouverture/fermeture de la sidebar : bien visible (vert CMRPI) */
-        [data-testid="stSidebarCollapsedControl"] {{
-            display: block !important;
-            visibility: visible !important;
-        }}
-        [data-testid="stSidebarCollapsedControl"] svg,
-        [data-testid="collapsedControl"] svg,
-        [data-testid="stSidebarCollapseButton"] svg {{
-            color: {COULEUR_PRINCIPALE} !important;
-            fill: {COULEUR_PRINCIPALE} !important;
-            width: 26px; height: 26px;
         }}
 
         /* ---- DROPDOWNS (selectbox) : FOND BLANC FORCÉ (bat le thème sombre) ---- */
@@ -217,40 +194,14 @@ st.markdown(
             /* Les colonnes Streamlit s'empilent verticalement sur mobile */
             [data-testid="stHorizontalBlock"] {{ flex-direction: column !important; }}
             [data-testid="column"] {{ width: 100% !important; flex: 1 1 100% !important; }}
-            /* Réduire les marges latérales pour gagner de la place */
             .block-container {{ padding-left: 0.8rem !important; padding-right: 0.8rem !important; }}
-            /* Bouton d'ouverture des filtres BIEN VISIBLE sur mobile (rond vert) */
-            [data-testid="stSidebarCollapsedControl"] {{
-                background: {COULEUR_PRINCIPALE} !important;
-                border-radius: 50% !important;
-                padding: 6px !important;
-                box-shadow: 0 2px 8px rgba(0,0,0,0.25) !important;
-                top: 12px !important; left: 12px !important;
-                z-index: 999999 !important;
-            }}
-            [data-testid="stSidebarCollapsedControl"] svg {{
-                fill: #FFFFFF !important; color: #FFFFFF !important;
-                width: 28px !important; height: 28px !important;
-            }}
         }}
 
-        /* Rendre le bandeau d'en-tête Streamlit transparent (retire le fond noir)
-           SANS écraser sa hauteur, sinon le bouton d'ouverture de la sidebar
-           disparaît sur mobile. */
-        header[data-testid="stHeader"] {{
-            background: transparent !important;
-            box-shadow: none !important;
-        }}
+        /* Masquer seulement la barre d'outils "Deploy" et le liseré coloré.
+           On NE touche PAS au header ni au bouton d'ouverture de la sidebar,
+           pour que les filtres restent accessibles sur mobile. */
         [data-testid="stToolbar"] {{ display: none !important; }}
         [data-testid="stDecoration"] {{ display: none !important; }}
-        /* Bouton d'ouverture de la sidebar : toujours visible et au-dessus de tout */
-        [data-testid="stSidebarCollapsedControl"],
-        [data-testid="collapsedControl"] {{
-            display: flex !important;
-            visibility: visible !important;
-            opacity: 1 !important;
-            z-index: 999999 !important;
-        }}
     </style>
     """,
     unsafe_allow_html=True,
@@ -351,24 +302,6 @@ with col_titre:
         """,
         unsafe_allow_html=True,
     )
-
-# Indication visible uniquement sur mobile pour trouver les filtres
-st.markdown(
-    """
-    <style>
-        .mobile-hint {{ display: none; }}
-        @media (max-width: 768px) {{
-            .mobile-hint {{
-                display: block; background: #EAF0F1; color: #3E6668;
-                border-left: 4px solid #3E6668; border-radius: 6px;
-                padding: 8px 12px; margin: 8px 0; font-size: 13px; font-weight: 600;
-            }}
-        }}
-    </style>
-    <div class="mobile-hint">↖ Touchez la flèche en haut à gauche pour ouvrir les filtres</div>
-    """,
-    unsafe_allow_html=True,
-)
 
 # ==============================================================================
 # 6. CARTES D'INDICATEURS CLÉS
