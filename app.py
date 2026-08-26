@@ -402,6 +402,6 @@ with onglet3:
 
 st.markdown(
     "<div class='footer'>© 2025 CMRPI — EMC Helpline · "
-    "Tableau de bord décisionnel et analytique des signalements · Jalon 3</div>",
+    "Tableau de bord décisionnel et analytique des signalements</div>",
     unsafe_allow_html=True,
 )
