@@ -235,16 +235,22 @@ st.markdown(
         }}
 
         /* Rendre le bandeau d'en-tête Streamlit transparent (retire le fond noir)
-           tout en gardant les boutons de contrôle de la sidebar accessibles */
+           SANS écraser sa hauteur, sinon le bouton d'ouverture de la sidebar
+           disparaît sur mobile. */
         header[data-testid="stHeader"] {{
             background: transparent !important;
             box-shadow: none !important;
-            height: 0 !important;
         }}
         [data-testid="stToolbar"] {{ display: none !important; }}
         [data-testid="stDecoration"] {{ display: none !important; }}
-        /* Récupérer l'espace laissé par le header supprimé */
-        .block-container {{ padding-top: 1.5rem !important; }}
+        /* Bouton d'ouverture de la sidebar : toujours visible et au-dessus de tout */
+        [data-testid="stSidebarCollapsedControl"],
+        [data-testid="collapsedControl"] {{
+            display: flex !important;
+            visibility: visible !important;
+            opacity: 1 !important;
+            z-index: 999999 !important;
+        }}
     </style>
     """,
     unsafe_allow_html=True,
@@ -345,6 +351,24 @@ with col_titre:
         """,
         unsafe_allow_html=True,
     )
+
+# Indication visible uniquement sur mobile pour trouver les filtres
+st.markdown(
+    """
+    <style>
+        .mobile-hint {{ display: none; }}
+        @media (max-width: 768px) {{
+            .mobile-hint {{
+                display: block; background: #EAF0F1; color: #3E6668;
+                border-left: 4px solid #3E6668; border-radius: 6px;
+                padding: 8px 12px; margin: 8px 0; font-size: 13px; font-weight: 600;
+            }}
+        }}
+    </style>
+    <div class="mobile-hint">↖ Touchez la flèche en haut à gauche pour ouvrir les filtres</div>
+    """,
+    unsafe_allow_html=True,
+)
 
 # ==============================================================================
 # 6. CARTES D'INDICATEURS CLÉS
